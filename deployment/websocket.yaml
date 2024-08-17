@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-websocket
+  labels:
+    app: go-websocket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-websocket
+  template:
+    metadata:
+      labels:
+        app: go-websocket
+    spec:
+      containers:
+      - name: go-websocket
+        image: duchoang206h/go-websocket:v1.0.0
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-websocket
+  labels:
+    app: go-websocket
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: go-websocket
+  type: LoadBalancer
